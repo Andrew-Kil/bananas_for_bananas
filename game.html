@@ -188,7 +188,20 @@
 
           player.anims.play("turn");
 
+          player.setTint(0xff0000);
+
+          this.physics.pause();
+
           livesText.setText("Lives: " + lives);
+
+          this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+              player.clearTint();
+              this.physics.resume();
+            },
+            loop: true
+          });
         }
 
         if (lives === 0) {
