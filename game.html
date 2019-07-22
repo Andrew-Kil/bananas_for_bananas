@@ -40,6 +40,7 @@
       let gameOver = false;
       let scoreText;
       let livesText;
+      let gameOverText;
 
       let game = new Phaser.Game(config);
 
@@ -128,6 +129,10 @@
 
       function update() {
         if (gameOver) {
+          gameOverText = this.add.text(250, 250, "GAME OVER", {
+            fontSize: "64px",
+            fill: "#FFA500"
+          });
           return;
         }
 
@@ -156,6 +161,10 @@
         if (cursors.down.isDown) {
           player.setVelocityX(0);
         }
+
+        // if (score === 5) {
+        //   livesText.setText("Lives: " + lives++);
+        // }
       }
 
       function collectBanana(player, banana) {
