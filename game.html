@@ -195,13 +195,15 @@
           livesText.setText("Lives: " + lives);
 
           this.time.addEvent({
-            delay: 1000,
+            delay: 2000,
             callback: () => {
               player.clearTint();
               this.physics.resume();
             },
             loop: true
           });
+
+          fireball.disableBody(true, true);
         }
 
         if (lives === 0) {
