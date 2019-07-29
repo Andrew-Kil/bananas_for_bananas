@@ -49,6 +49,7 @@
         this.load.image("ground", "assets/platform.png");
         this.load.image("banana", "assets/banana.png");
         this.load.image("fireball", "assets/fireball.png");
+        this.load.image("lambchop", "assets/lambchop.png");
         this.load.spritesheet("dog", "assets/dog.png", {
           frameWidth: 61,
           frameHeight: 48
@@ -106,25 +107,34 @@
           child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         });
 
+        lambchops = this.physics.add.group();
+
         fireballs = this.physics.add.group();
 
-        livesText = this.add.text(100, 0, "Lives: 3", {
-          fontSize: "32px",
-          fill: "#0000FF"
-        });
-
-        scoreText = this.add.text(500, 0, "Bananas: 0", {
+        scoreText = this.add.text(100, 0, "Bananas: 0", {
           fontSize: "32px",
           fill: "#ffff00"
+        });
+
+        livesText = this.add.text(500, 0, "Lives: 3", {
+          fontSize: "32px",
+          fill: "#0000FF"
         });
 
         this.physics.add.collider(player, platforms);
         this.physics.add.collider(bananas, platforms);
         this.physics.add.collider(fireballs, platforms);
+        this.physics.add.collider(lambchops, platforms);
 
         this.physics.add.overlap(player, bananas, collectBanana, null, this);
-
         this.physics.add.collider(player, fireballs, hitFireball, null, this);
+        this.physics.add.overlap(
+          player,
+          lambchops,
+          collectLambchop,
+          null,
+          this
+        );
       }
 
       function update() {
@@ -161,10 +171,6 @@
         if (cursors.down.isDown) {
           player.setVelocityX(0);
         }
-
-        // if (score === 5) {
-        //   livesText.setText("Lives: " + lives++);
-        // }
       }
 
       function collectBanana(player, banana) {
@@ -172,6 +178,29 @@
 
         score++;
         scoreText.setText("Bananas: " + score);
+
+        let lampchopAppears = [12, 24];
+
+        if (bananas.countActive(true) === 0 && lampchopAppears) {
+          let x =
+            player.x < 400
+              ? Phaser.Math.Between(400, 800)
+              : Phaser.Math.Between(0, 400);
+
+          let lambchop = lambchops.create(x, 16, "lambchop");
+          lambchop.setBounce(1);
+          lambchop.setCollideWorldBounds(true);
+          lambchop.setVelocity(Phaser.Math.Between(-200, 200), 20);
+          lambchop.allowGravity = false;
+
+          this.time.addEvent({
+            delay: 5000,
+            callback: () => {
+              lambchop.disableBody(true, true);
+            },
+            loop: true
+          });
+        }
 
         if (bananas.countActive(true) === 0) {
           bananas.children.iterate(function(child) {
@@ -189,6 +218,27 @@
           fireball.setVelocity(Phaser.Math.Between(-200, 200), 20);
           fireball.allowGravity = false;
         }
+      }
+
+      function collectLambchop(player, lambchop) {
+        lives++;
+
+        player.setTint(0x008000);
+
+        this.physics.pause();
+
+        livesText.setText("Lives: " + lives);
+
+        this.time.addEvent({
+          delay: 2000,
+          callback: () => {
+            player.clearTint();
+            this.physics.resume();
+          },
+          loop: true
+        });
+
+        lambchop.disableBody(true, true);
       }
 
       function hitFireball(player, fireball) {
@@ -223,6 +273,8 @@
           player.anims.play("turn");
 
           gameOver = true;
+
+          fireball.disableBody(true, true);
         }
       }
     </script>
