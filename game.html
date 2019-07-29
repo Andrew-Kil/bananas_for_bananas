@@ -179,7 +179,25 @@
         score++;
         scoreText.setText("Bananas: " + score);
 
-        let lampchopAppears = [12, 24];
+        let lampchopAppears = [
+          12,
+          24,
+          36,
+          48,
+          60,
+          72,
+          84,
+          96,
+          108,
+          120,
+          132,
+          144,
+          156,
+          168,
+          180,
+          192,
+          204
+        ];
 
         if (bananas.countActive(true) === 0 && lampchopAppears) {
           let x =
@@ -194,7 +212,7 @@
           lambchop.allowGravity = false;
 
           this.time.addEvent({
-            delay: 5000,
+            delay: 7000,
             callback: () => {
               lambchop.disableBody(true, true);
             }
