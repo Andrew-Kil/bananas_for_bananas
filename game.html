@@ -197,6 +197,21 @@
             delay: 5000,
             callback: () => {
               lambchop.disableBody(true, true);
+            }
+          });
+
+          this.time.addEvent({
+            delay: 500,
+            callback: () => {
+              lambchop.setTint(0x80ff00);
+            },
+            loop: true
+          });
+
+          this.time.addEvent({
+            delay: 750,
+            callback: () => {
+              lambchop.clearTint();
             },
             loop: true
           });
@@ -223,7 +238,7 @@
       function collectLambchop(player, lambchop) {
         lives++;
 
-        player.setTint(0x008000);
+        player.setTint(0x80ff00);
 
         this.physics.pause();
 
