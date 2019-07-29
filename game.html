@@ -206,7 +206,7 @@
               : Phaser.Math.Between(0, 400);
 
           let lambchop = lambchops.create(x, 16, "lambchop");
-          lambchop.setBounce(1);
+          lambchop.setBounce(0.75);
           lambchop.setCollideWorldBounds(true);
           lambchop.setVelocity(Phaser.Math.Between(-200, 200), 20);
           lambchop.allowGravity = false;
